@@ -63,15 +63,10 @@ public class BitArray
 		{
 			if (val)
 			{
-				//System.out.println(Long.toBinaryString(bits[loc / BITS_IN_LONG]));
 				bits[loc / BITS_IN_LONG] |= (1L << (loc % BITS_IN_LONG));
-				//System.out.println(Long.toBinaryString((1L << (loc % BITS_IN_LONG))));
-				//System.out.println(Long.toBinaryString(bits[loc / BITS_IN_LONG]));
-				//System.out.println("New value at " + loc + " is " + this.get(loc));
-				//System.out.println();
 			} else
 			{
-				bits[loc / BITS_IN_LONG] &= (-1L ^ (1L << (loc % BITS_IN_LONG))); // DO NOT FORGET THAT SECOND L
+				bits[loc / BITS_IN_LONG] &= ~(1L << (loc % BITS_IN_LONG)); // DO NOT FORGET THAT SECOND L
 																				  // TOOK ME FOREVER TO FIX WHEN I FORGOT
 			}
 		} else
