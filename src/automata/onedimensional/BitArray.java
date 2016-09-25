@@ -1,3 +1,4 @@
+package automata.onedimensional;
 public class BitArray
 {
 	/**

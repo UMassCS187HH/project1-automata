@@ -1,3 +1,4 @@
+package automata.onedimensional;
 import java.awt.image.*;
 
 public class AutomataImageGenerator
