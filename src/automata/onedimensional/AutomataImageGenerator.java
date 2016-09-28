@@ -58,7 +58,7 @@ public class AutomataImageGenerator
 		// take the last, ie top-most layer and move it to the bottom/beginning
 		this.lastRow.nextNode = this.firstRow;
 		this.firstRow = lastRow;
-		Automata.evolve(firstRow.nextNode.val, firstRow.val, this.rule);
+		BitArray.evolve(firstRow.nextNode.val, firstRow.val, this.rule);
 		BufferedImage result = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		BitArrayLinkedListNode curRow = this.firstRow;
 		for (int row = 0; row < this.height; row++)
