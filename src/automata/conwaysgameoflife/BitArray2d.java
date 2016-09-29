@@ -1,8 +1,5 @@
 package automata.conwaysgameoflife;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 /**
  * 2 dimensional bit array with memory-efficient storage
  */
