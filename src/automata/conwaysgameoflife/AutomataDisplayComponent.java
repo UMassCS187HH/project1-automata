@@ -3,8 +3,10 @@ package automata.conwaysgameoflife;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
@@ -14,6 +16,7 @@ public class AutomataDisplayComponent extends JComponent
 	private BitArray2d board, copy;
 	private int cellSize;
 	private Color deadColor = Color.WHITE, liveColor = Color.BLACK;
+	private Image imgToDraw;
 	
 	/**
 	 * Creates a new AutomataDisplayPane with the given board and pixel size
@@ -30,13 +33,22 @@ public class AutomataDisplayComponent extends JComponent
 		this.addMouseListener
 		(
 			new MouseListener()
-			{	@Override public void mouseClicked(MouseEvent arg0)
-				{
-					// TODO do this
-				}
+			{	@Override public void mouseClicked(MouseEvent arg0) { }
 				@Override public void mouseEntered(MouseEvent arg0) { }
 				@Override public void mouseExited(MouseEvent arg0) { }
-				@Override public void mousePressed(MouseEvent arg0) { }
+				@Override public void mousePressed(MouseEvent arg0)
+				{
+					int cellX = arg0.getX() / cellSize;
+					int cellY = arg0.getY() / cellSize;
+					if (cellX > 0 && cellY > 0 && cellX < board.getWidth() - 1 && cellY < board.getHeight() - 1)
+					{
+						board.set(cellX, cellY, !board.get(cellX, cellY));
+						setImageToDraw(getBufferedImage());
+						AutomataDisplayComponent.this.repaint();
+					}
+					
+					System.out.println("mouse clicked at cell (" + cellX + ", " + cellY + ")");
+				}
 				@Override public void mouseReleased(MouseEvent arg0) { }
 			}
 		);
@@ -54,9 +66,14 @@ public class AutomataDisplayComponent extends JComponent
 		this.copy = temp;
 	}
 	
-	@Override public void paint(Graphics g)
+	/**
+	 * Draws an image of the board and returns it
+	 * @return a BufferedImage that is the board
+	 */
+	public BufferedImage getBufferedImage()
 	{
-		super.paint(g);
+		BufferedImage img = new BufferedImage(board.getWidth() * cellSize, board.getHeight() * cellSize, BufferedImage.TYPE_INT_RGB);
+		Graphics g = img.getGraphics();
 		if (this.getWidth() != board.getWidth() * cellSize || this.getHeight() != board.getHeight() * cellSize)
 		{
 			System.err.println("AutoamtaDisplayPane is not the right size to draw itself. Current size is: " + this.getWidth() + "x" + this.getHeight() + ", but I need to be size " + (board.getWidth() * cellSize) + "x" + (board.getHeight() * cellSize));
@@ -75,6 +92,14 @@ public class AutomataDisplayComponent extends JComponent
 				g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
 			}
 		}
+		return img;
+	}
+	
+	@Override public void paint(Graphics g)
+	{
+		super.paint(g);
+		g.drawImage(this.imgToDraw, 0, 0, null);
+		
 	}
 	
 	/***** GETTERS AND SETTERS *****/
@@ -96,6 +121,15 @@ public class AutomataDisplayComponent extends JComponent
 	public void setDeadColor(Color color)
 	{
 		this.deadColor = color;
+	}
+	
+	/**
+	 * Called in order to set the image that this component should draw
+	 * @param img the Image to draw
+	 */
+	public void setImageToDraw(Image img)
+	{
+		this.imgToDraw = img;
 	}
 	
 	public Color getLiveColor()

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Timer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -38,7 +39,9 @@ public class SetupFrame extends JFrame implements WindowListener
 	
 	private JFrame displayFrame = null;
 	private AutomataDisplayComponent display = null;
-	private DisplayUpdateThread displayUpdateThread = null;
+	private DisplayUpdateTimerTask displayUpdateTimerTask = null;
+	private Timer displayUpdateTimer = null;
+	
 	public SetupFrame()
 	{
 		super();
@@ -90,10 +93,11 @@ public class SetupFrame extends JFrame implements WindowListener
 	 */
 	private void killDisplayFrame()
 	{
-		this.displayUpdateThread.stopThread();
 		this.displayFrame.setVisible(false);
 		this.displayFrame.dispose();
-		this.displayUpdateThread = null;
+		this.displayUpdateTimer.cancel();
+		this.displayUpdateTimer = null;
+		this.displayUpdateTimerTask = null;
 		
 		this.stopButton.setEnabled(false);
 		this.pauseButton.setEnabled(false);
@@ -114,7 +118,7 @@ public class SetupFrame extends JFrame implements WindowListener
 		@Override
 		public void actionPerformed(ActionEvent arg0)
 		{
-			if (displayUpdateThread == null)
+			if (displayUpdateTimer == null)
 			{
 				// Set up a simple starting board
 				int boardWidth = ((SpinnerNumberModel)widthSpinner.getModel()).getNumber().intValue();
@@ -130,7 +134,6 @@ public class SetupFrame extends JFrame implements WindowListener
 				// set up important variables
 				displayFrame = new JFrame("Conway's Game of Life");
 				display = new AutomataDisplayComponent(board, cellSize);
-				displayUpdateThread = new DisplayUpdateThread(displayFrame, display);
 				
 				// set up components used to display the stuff
 				JPanel contentPane = new JPanel();
@@ -156,10 +159,12 @@ public class SetupFrame extends JFrame implements WindowListener
 				// let's go!
 				displayFrame.setVisible(true);
 				displayFrame.pack();
-				displayUpdateThread.start();
+				displayUpdateTimer = new Timer();
+				displayUpdateTimerTask = new DisplayUpdateTimerTask(display);
+				displayUpdateTimer.scheduleAtFixedRate(displayUpdateTimerTask , 0, 200);
 			} else
 			{
-				displayUpdateThread.unPause();
+				displayUpdateTimerTask.unPause();
 			}
 			
 			// enable/disable various buttons
@@ -174,9 +179,9 @@ public class SetupFrame extends JFrame implements WindowListener
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			if (displayUpdateThread != null)
+			if (displayUpdateTimer != null)
 			{
-				displayUpdateThread.pause();
+				displayUpdateTimerTask.pause();
 				startButton.setEnabled(true);
 				pauseButton.setEnabled(false);
 			}
@@ -188,7 +193,7 @@ public class SetupFrame extends JFrame implements WindowListener
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			if (SetupFrame.this.displayUpdateThread != null)
+			if (SetupFrame.this.displayUpdateTimer != null)
 			{
 				SetupFrame.this.killDisplayFrame();
 			}
