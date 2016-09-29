@@ -1,8 +1,11 @@
 package automata.conwaysgameoflife;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -11,11 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 @SuppressWarnings("serial")
-public class SetUpFrame extends JFrame implements WindowListener
+public class SetupFrame extends JFrame implements WindowListener
 {
 	private JLabel headerLabel = new JLabel("Set Up Conway's Game of Life"),
 				   widthLabel = new JLabel("Width: "),
@@ -35,7 +39,7 @@ public class SetUpFrame extends JFrame implements WindowListener
 	private JFrame displayFrame = null;
 	private AutomataDisplayComponent display = null;
 	private DisplayUpdateThread displayUpdateThread = null;
-	public SetUpFrame()
+	public SetupFrame()
 	{
 		super();
 		this.setContentPane(contentPane);
@@ -64,6 +68,9 @@ public class SetUpFrame extends JFrame implements WindowListener
 		stopButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		pauseButton.setEnabled(false);
 		stopButton.setEnabled(false);
+		startButton.addActionListener(new StartButtonActionListener());
+		pauseButton.addActionListener(new PauseButtonActionListener());
+		stopButton.addActionListener(new StopButtonActionListener());
 		contentPane.add(startButton);
 		contentPane.add(pauseButton);
 		contentPane.add(stopButton);
@@ -101,4 +108,90 @@ public class SetUpFrame extends JFrame implements WindowListener
 	@Override public void windowDeiconified(WindowEvent e) { }
 	@Override public void windowIconified(WindowEvent e) { }
 	@Override public void windowOpened(WindowEvent e) { }
+	
+	private class StartButtonActionListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			if (displayUpdateThread == null)
+			{
+				// Set up a simple starting board
+				int boardWidth = ((SpinnerNumberModel)widthSpinner.getModel()).getNumber().intValue();
+				int boardHeight = ((SpinnerNumberModel)heightSpinner.getModel()).getNumber().intValue();
+				int cellSize = ((SpinnerNumberModel)cellSizeSpinner.getModel()).getNumber().intValue();
+				BitArray2d board = new BitArray2d(boardWidth, boardHeight);
+				board.set(10, 10, true);
+				board.set(10, 11, true);
+				board.set(10, 12, true);
+				board.set(9, 12, true);
+				board.set(8, 11, true);
+				
+				// set up important variables
+				displayFrame = new JFrame("Conway's Game of Life");
+				display = new AutomataDisplayComponent(board, cellSize);
+				displayUpdateThread = new DisplayUpdateThread(displayFrame, display);
+				
+				// set up components used to display the stuff
+				JPanel contentPane = new JPanel();
+				JScrollPane scrollPane = new JScrollPane(contentPane);
+				scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+				displayFrame.getContentPane().setLayout(new BorderLayout());
+				displayFrame.getContentPane().add(scrollPane);
+				displayFrame.addWindowListener
+				(
+					new WindowListener()
+					{   @Override public void windowActivated(WindowEvent e) { }
+						@Override public void windowClosed(WindowEvent e) { }
+						@Override public void windowClosing(WindowEvent e) { killDisplayFrame(); }
+						@Override public void windowDeactivated(WindowEvent e) { }
+						@Override public void windowDeiconified(WindowEvent e) { }
+						@Override public void windowIconified(WindowEvent e) { }
+						@Override public void windowOpened(WindowEvent e) { }
+					}
+				);
+				contentPane.add(display);
+				
+				// let's go!
+				displayFrame.setVisible(true);
+				displayFrame.pack();
+				displayUpdateThread.start();
+			} else
+			{
+				displayUpdateThread.unPause();
+			}
+			
+			// enable/disable various buttons
+			startButton.setEnabled(false);
+			stopButton.setEnabled(true);
+			pauseButton.setEnabled(true);
+		}
+	}
+	
+	private class PauseButtonActionListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			if (displayUpdateThread != null)
+			{
+				displayUpdateThread.pause();
+				startButton.setEnabled(true);
+				pauseButton.setEnabled(false);
+			}
+		}
+	}
+	
+	private class StopButtonActionListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			if (SetupFrame.this.displayUpdateThread != null)
+			{
+				SetupFrame.this.killDisplayFrame();
+			}
+		}
+	}
 }

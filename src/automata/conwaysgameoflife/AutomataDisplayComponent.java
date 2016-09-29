@@ -61,7 +61,6 @@ public class AutomataDisplayComponent extends JComponent
 		{
 			System.err.println("AutoamtaDisplayPane is not the right size to draw itself. Current size is: " + this.getWidth() + "x" + this.getHeight() + ", but I need to be size " + (board.getWidth() * cellSize) + "x" + (board.getHeight() * cellSize));
 		}
-		int liveCount = 0;
 		for (int x = 0; x < board.getWidth(); x++)
 		{
 			for (int y = 0; y < board.getHeight(); y++)
@@ -69,7 +68,6 @@ public class AutomataDisplayComponent extends JComponent
 				if (board.get(x, y))
 				{
 					g.setColor(liveColor);
-					liveCount++;
 				} else
 				{
 					g.setColor(deadColor);
@@ -77,7 +75,6 @@ public class AutomataDisplayComponent extends JComponent
 				g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
 			}
 		}
-		System.out.println("Called paint and there are " + liveCount + " live cells.");
 	}
 	
 	/***** GETTERS AND SETTERS *****/

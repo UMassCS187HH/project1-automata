@@ -24,7 +24,7 @@ public class DisplayUpdateThread extends Thread
 	{
 		while (!stop)
 		{
-			while (!isPaused)
+			while (true)
 			{
 				try
 				{
@@ -33,8 +33,11 @@ public class DisplayUpdateThread extends Thread
 				{
 					e.printStackTrace();
 				}
-				display.evolve();
-				frame.repaint();
+				if (!isPaused)
+				{
+					display.evolve();
+					frame.repaint();
+				}
 			}
 		}
 	}
@@ -54,8 +57,17 @@ public class DisplayUpdateThread extends Thread
 	}
 	
 	/**
-	 * Tells the thread to start. Must be run after running start() to actually
-	 * start the Thread.
+	 * Starts the thread. No need to call unPause() after as with the 1D thread
+	 */
+	@Override
+	public void start()
+	{
+		super.start();
+		this.unPause();
+	}
+	
+	/**
+	 * Tells the thread to start after being paused.
 	 */
 	public void unPause()
 	{
