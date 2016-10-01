@@ -9,6 +9,18 @@ import javax.swing.Scrollable;
 @SuppressWarnings("serial")
 public class ScrollContentPane extends JPanel implements Scrollable
 {
+	private int scrollIncrement = 1;
+	
+	public int getScrollIncrement()
+	{
+		return this.scrollIncrement;
+	}
+	
+	public void setScrollIncrement(int scrollIncrement)
+	{
+		this.scrollIncrement = scrollIncrement;
+	}
+	
 	public ScrollContentPane(BorderLayout borderLayout)
 	{
 		super(borderLayout);
@@ -23,7 +35,7 @@ public class ScrollContentPane extends JPanel implements Scrollable
 	@Override
 	public int getScrollableBlockIncrement(Rectangle arg0, int arg1, int arg2)
 	{
-		return 1;
+		return this.scrollIncrement;
 	}
 
 	@Override
@@ -41,6 +53,6 @@ public class ScrollContentPane extends JPanel implements Scrollable
 	@Override
 	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2)
 	{
-		return 1;
+		return this.scrollIncrement;
 	}
 }

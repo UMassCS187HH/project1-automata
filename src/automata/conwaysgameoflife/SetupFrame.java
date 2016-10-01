@@ -2,6 +2,7 @@ package automata.conwaysgameoflife;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class SetupFrame extends JFrame implements WindowListener
@@ -41,6 +44,7 @@ public class SetupFrame extends JFrame implements WindowListener
 	private AutomataDisplayComponent display = null;
 	private DisplayUpdateTimerTask displayUpdateTimerTask = null;
 	private Timer displayUpdateTimer = null;
+	private ScrollContentPane scrollContentPane = null;
 	
 	public SetupFrame()
 	{
@@ -63,6 +67,7 @@ public class SetupFrame extends JFrame implements WindowListener
 		
 		cellSizePanel.add(cellSizeLabel);
 		cellSizePanel.add(cellSizeSpinner);
+		cellSizeSpinner.addChangeListener(new ChangeCellSizeSpinnerListener());
 		cellSizePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentPane.add(cellSizePanel);
 		
@@ -98,6 +103,7 @@ public class SetupFrame extends JFrame implements WindowListener
 		this.displayUpdateTimer.cancel();
 		this.displayUpdateTimer = null;
 		this.displayUpdateTimerTask = null;
+		scrollContentPane = null;
 		
 		this.stopButton.setEnabled(false);
 		this.pauseButton.setEnabled(false);
@@ -112,6 +118,19 @@ public class SetupFrame extends JFrame implements WindowListener
 	@Override public void windowDeiconified(WindowEvent e) { }
 	@Override public void windowIconified(WindowEvent e) { }
 	@Override public void windowOpened(WindowEvent e) { }
+	
+	private class ChangeCellSizeSpinnerListener implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent arg0)
+		{
+			int cellSize = ((SpinnerNumberModel)cellSizeSpinner.getModel()).getNumber().intValue();
+			display.setCellSize(cellSize);
+			scrollContentPane.setScrollIncrement(cellSize);
+			scrollContentPane.setPreferredSize(new Dimension(cellSize * display.getBoard().getWidth(), cellSize * display.getBoard().getHeight()));
+			displayFrame.pack();
+		}
+	}
 	
 	private class StartButtonActionListener implements ActionListener
 	{
@@ -136,8 +155,10 @@ public class SetupFrame extends JFrame implements WindowListener
 				display = new AutomataDisplayComponent(board, cellSize);
 				
 				// set up components used to display the stuff
-				JPanel contentPane = new JPanel();
-				JScrollPane scrollPane = new JScrollPane(contentPane);
+				scrollContentPane = new ScrollContentPane(new BorderLayout());
+				scrollContentPane.setScrollIncrement(((SpinnerNumberModel)cellSizeSpinner.getModel()).getNumber().intValue());
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setViewportView(scrollContentPane);
 				scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 				displayFrame.getContentPane().setLayout(new BorderLayout());
@@ -154,7 +175,7 @@ public class SetupFrame extends JFrame implements WindowListener
 						@Override public void windowOpened(WindowEvent e) { }
 					}
 				);
-				contentPane.add(display);
+				scrollContentPane.add(display);
 				
 				// let's go!
 				displayFrame.setVisible(true);

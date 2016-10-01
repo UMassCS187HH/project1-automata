@@ -38,8 +38,8 @@ public class AutomataDisplayComponent extends JComponent
 				@Override public void mouseExited(MouseEvent arg0) { }
 				@Override public void mousePressed(MouseEvent arg0)
 				{
-					int cellX = arg0.getX() / cellSize;
-					int cellY = arg0.getY() / cellSize;
+					int cellX = arg0.getX() / AutomataDisplayComponent.this.cellSize;
+					int cellY = arg0.getY() / AutomataDisplayComponent.this.cellSize;
 					if (cellX > 0 && cellY > 0 && cellX < board.getWidth() - 1 && cellY < board.getHeight() - 1)
 					{
 						board.set(cellX, cellY, !board.get(cellX, cellY));
@@ -109,6 +109,17 @@ public class AutomataDisplayComponent extends JComponent
 	public void setBoard(BitArray2d board)
 	{
 		this.board = board;
+	}
+	
+	public int getCellSize()
+	{
+		return this.cellSize;
+	}
+	
+	public void setCellSize(int cellSize)
+	{
+		this.cellSize = cellSize;
+		this.setPreferredSize(new Dimension(cellSize * this.board.getWidth(), cellSize * this.board.getHeight()));
 	}
 	
 	public Color getDeadColor()
