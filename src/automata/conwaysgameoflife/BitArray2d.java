@@ -85,9 +85,14 @@ public class BitArray2d
 	 * @param x x-coord of point
 	 * @param y y-y-coord of point
 	 * @return the value at the specified point
+	 * @throws ArrayIndexOutOfBoundsException if x or y are not in bounds
 	 */
 	public boolean get(int x, int y)
 	{
+		if (x < 0 || y < 0 || x > this.width || y > this.height)
+		{
+			throw new ArrayIndexOutOfBoundsException("Error: tried to access point (" + x + ", " + y + ") on a " + this.width + "x" + this.height + " array");
+		}
 		long bits = this.bits[(x + y * this.width) / BITS_IN_LONG];
 		return (bits & (1L << ((x + y * this.width) % BITS_IN_LONG))) != 0L;
 	}
@@ -115,9 +120,14 @@ public class BitArray2d
 	 * @param x x-coord of point to set at
 	 * @param y y-coord of point to set at
 	 * @param val value to set
+	 * @throws ArrayIndexOutOfBoundsException if x or y are not in bounds
 	 */
 	public void set(int x, int y, boolean val)
 	{
+		if (x < 0 || y < 0 || x > this.width || y > this.height)
+		{
+			throw new ArrayIndexOutOfBoundsException("Error: tried to access point (" + x + ", " + y + ") on a " + this.width + "x" + this.height + " array");
+		}
 		long bits = this.bits[(x + y * this.width) / BITS_IN_LONG];
 		if (val)
 		{
