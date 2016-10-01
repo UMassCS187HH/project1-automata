@@ -23,10 +23,10 @@ public class AutomataDisplayComponent extends JComponent
 	 * @param board the game board to start out with
 	 * @param cellSize how wide and tall the cells should be
 	 */
-	public AutomataDisplayComponent(BitArray2d board, int cellSize)
+	public AutomataDisplayComponent(BitArray2d board_, int cellSize)
 	{
 		super();
-		this.board = board;
+		this.board = board_;
 		this.copy = new BitArray2d(board.getWidth(), board.getHeight());
 		this.cellSize = cellSize;
 		this.setPreferredSize(new Dimension(board.getWidth() * cellSize, board.getHeight() * cellSize));
@@ -43,11 +43,13 @@ public class AutomataDisplayComponent extends JComponent
 					if (cellX > 0 && cellY > 0 && cellX < board.getWidth() - 1 && cellY < board.getHeight() - 1)
 					{
 						board.set(cellX, cellY, !board.get(cellX, cellY));
-						setImageToDraw(getBufferedImage());
+						System.out.println("mouse clicked at cell (" + cellX + ", " + cellY + ")");
+						System.out.println("value of cell (" + cellX + ", " + cellY + ") is " + board.get(cellX, cellY));
+						setImageToDraw(AutomataDisplayComponent.this.getBufferedImage());
 						AutomataDisplayComponent.this.repaint();
+
+						System.out.println("value of cell (" + cellX + ", " + cellY + ") is " + board.get(cellX, cellY));
 					}
-					
-					System.out.println("mouse clicked at cell (" + cellX + ", " + cellY + ")");
 				}
 				@Override public void mouseReleased(MouseEvent arg0) { }
 			}
@@ -82,6 +84,10 @@ public class AutomataDisplayComponent extends JComponent
 		{
 			for (int y = 0; y < board.getHeight(); y++)
 			{
+				if (x == 1 & y == 1)
+				{
+					System.out.println("value of cell (" + x + ", " + x + ") is " + board.get(y, y));
+				}
 				if (board.get(x, y))
 				{
 					g.setColor(liveColor);
