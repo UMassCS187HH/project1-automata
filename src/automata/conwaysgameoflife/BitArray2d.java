@@ -6,7 +6,7 @@ package automata.conwaysgameoflife;
 public class BitArray2d
 {
 	private int width, height;
-	private long[] bits;
+	public long[] bits; // public for testing purposes only
 	
 	private static int BITS_IN_LONG = 64;
 	
