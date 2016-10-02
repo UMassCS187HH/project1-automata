@@ -126,11 +126,16 @@ public class SetupFrame extends JFrame implements WindowListener
 		@Override
 		public void stateChanged(ChangeEvent arg0)
 		{
-			int cellSize = ((SpinnerNumberModel)cellSizeSpinner.getModel()).getNumber().intValue();
-			display.setCellSize(cellSize);
-			scrollContentPane.setScrollIncrement(cellSize);
-			scrollContentPane.setPreferredSize(new Dimension(cellSize * display.getBoard().getWidth(), cellSize * display.getBoard().getHeight()));
-			displayFrame.pack();
+			if (display != null)
+			{
+				int cellSize = ((SpinnerNumberModel)cellSizeSpinner.getModel()).getNumber().intValue();
+				display.setCellSize(cellSize);
+				scrollContentPane.setScrollIncrement(cellSize);
+				scrollContentPane.setPreferredSize(new Dimension(cellSize * display.getBoard().getWidth(), cellSize * display.getBoard().getHeight()));
+				displayFrame.pack();
+				display.setImageToDraw(display.getBufferedImage());
+				displayFrame.revalidate();
+			}
 		}
 	}
 	
