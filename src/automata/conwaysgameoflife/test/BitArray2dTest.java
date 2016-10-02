@@ -3,7 +3,8 @@ package automata.conwaysgameoflife.test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import automata.conwaysgameoflife.BitArray2d;
+
+import automata.conwaysgameoflife.src.BitArray2d;
 
 public class BitArray2dTest
 {

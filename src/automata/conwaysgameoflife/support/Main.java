@@ -1,4 +1,4 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.support;
 
 public class Main
 {

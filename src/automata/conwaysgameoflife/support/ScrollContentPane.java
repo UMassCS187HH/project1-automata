@@ -1,4 +1,4 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.support;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

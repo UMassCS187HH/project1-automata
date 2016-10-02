@@ -1,6 +1,8 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.support;
 
 import java.awt.image.BufferedImage;
+
+import automata.conwaysgameoflife.src.BitArray2d;
 
 /**
  * Generates images of 2d automata.

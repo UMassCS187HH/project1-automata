@@ -1,4 +1,4 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.support;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
+
+import automata.conwaysgameoflife.src.BitArray2d;
 
 @SuppressWarnings("serial")
 public class AutomataDisplayComponent extends JComponent

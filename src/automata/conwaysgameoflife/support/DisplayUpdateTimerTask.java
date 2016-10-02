@@ -1,4 +1,4 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.support;
 
 import java.util.TimerTask;
 

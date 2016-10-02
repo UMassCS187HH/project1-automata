@@ -1,4 +1,4 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.support;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -21,6 +21,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import automata.conwaysgameoflife.src.BitArray2d;
 
 @SuppressWarnings("serial")
 public class SetupFrame extends JFrame implements WindowListener

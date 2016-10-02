@@ -1,4 +1,4 @@
-package automata.conwaysgameoflife;
+package automata.conwaysgameoflife.src;
 
 /**
  * 2 dimensional bit array with memory-efficient storage
