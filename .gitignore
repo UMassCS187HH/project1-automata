@@ -4,7 +4,6 @@ src/automata/conwaysgameoflife/TestMain.java
 .settings/
 BitArray2D.aux
 BitArray2D.log
-BitArray2D.pdf
 BitArray2D.synctex.gz
 bin/
 .gitignore~
