@@ -1,0 +1,25 @@
+src/automata/conwaysgameoflife/TestMain.java
+.classpath
+.project
+.settings/
+BitArray2D.aux
+BitArray2D.log
+BitArray2D.pdf
+BitArray2D.synctex.gz
+bin/
+.gitignore~
+
+## everything below this line is copied from github's sample Java gitignore file
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
