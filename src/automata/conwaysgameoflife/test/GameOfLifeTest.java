@@ -82,5 +82,6 @@ public class GameOfLifeTest
 		assertTrue(board2.get(9, 3));
 		assertTrue(board2.get(10, 3));
 		assertTrue(board2.get(11, 3));
+		assertFalse(board2.get(2, 2));
 	}
 }
