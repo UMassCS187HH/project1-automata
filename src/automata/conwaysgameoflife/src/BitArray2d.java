@@ -5,10 +5,10 @@ package automata.conwaysgameoflife.src;
  */
 public class BitArray2d
 {
-	private int width, height;
-	public long[] bits; // public for testing purposes only
+	private final int width, height;
+	public final long[] bits; // public for testing purposes only
 	
-	private static int BITS_IN_LONG = 64;
+	private final static int BITS_IN_LONG = 64;
 	
 	
 	/**
