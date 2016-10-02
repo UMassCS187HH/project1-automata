@@ -31,10 +31,10 @@ public class BitArray2dTest
 		assertFalse(array2.get(64, 0));
 		assertFalse(array2.get(199, 199));
 		assertFalse(array2.get(100, 63));
-		array1.bits[0] = 10L;
+		array1.bits[0] = -1L;
 		assertTrue(array1.get(0,1));
 		assertTrue(array1.get(0, 3));
-		assertFalse(array1.get(0, 2));
+		assertTrue(array1.get(0, 59));
 	}
 	
 	/**
